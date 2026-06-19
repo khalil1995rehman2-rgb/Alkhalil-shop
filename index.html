@@ -1,1 +1,734 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>فروشگاه الخلیل - سراوان</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --green:#2d6a4f;--green-dark:#1b4332;--green-light:#e8f5e9;--green-mid:#c8e6c9;
+  --gold:#c8963e;--gold-light:#fdf3e3;
+  --bg:#f4f0eb;--white:#fff;--gray:#888;--text:#2a2a2a;
+  --radius:16px;--shadow:0 2px 12px rgba(0,0,0,.08);
+}
+body{font-family:'Vazirmatn',sans-serif;background:#0f1923;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:10px}
 
+/* ── SHELL ── */
+.shell{width:100%;max-width:460px;display:flex;flex-direction:column;height:96vh;max-height:740px;border-radius:22px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+
+/* ── HEADER ── */
+.hdr{background:linear-gradient(150deg,var(--green-dark) 0%,var(--green) 100%);padding:0 16px;flex-shrink:0}
+.hdr-top{display:flex;align-items:center;gap:10px;padding:14px 0 10px}
+.logo-circle{width:44px;height:44px;background:rgba(255,255,255,.12);border:2px solid rgba(255,255,255,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.hdr-info{flex:1}
+.hdr-info h1{font-size:17px;font-weight:800;color:#fff;letter-spacing:.02em}
+.hdr-info p{font-size:12.5px;color:rgba(255,255,255,.7);margin-top:2px;display:flex;align-items:center;gap:4px}
+.dot{width:6px;height:6px;background:#52d68a;border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.hdr-actions{display:flex;gap:6px}
+.hdr-btn{background:rgba(255,255,255,.13);border:none;color:#fff;border-radius:20px;padding:5px 10px;font-size:11px;font-family:'Vazirmatn',sans-serif;cursor:pointer;transition:.2s;white-space:nowrap}
+.hdr-btn:hover{background:rgba(255,255,255,.25)}
+
+/* search bar */
+.search-bar{display:flex;align-items:center;background:rgba(255,255,255,.12);border-radius:25px;padding:6px 12px;margin-bottom:12px;gap:8px}
+.search-bar input{flex:1;background:none;border:none;outline:none;color:#fff;font-family:'Vazirmatn',sans-serif;font-size:15px;direction:rtl}
+.search-bar input::placeholder{color:rgba(255,255,255,.5)}
+.search-bar svg{fill:rgba(255,255,255,.6);flex-shrink:0}
+
+/* price filter chips */
+.filter-row{display:flex;gap:6px;padding-bottom:12px;overflow-x:auto;scrollbar-width:none}
+.filter-row::-webkit-scrollbar{display:none}
+.chip{background:rgba(255,255,255,.12);border:1.5px solid rgba(255,255,255,.2);color:rgba(255,255,255,.85);border-radius:20px;padding:5px 13px;font-size:13px;cursor:pointer;white-space:nowrap;transition:.2s;font-family:'Vazirmatn',sans-serif}
+.chip.active,.chip:hover{background:rgba(255,255,255,.95);color:var(--green-dark);border-color:transparent;font-weight:600}
+
+/* ── MESSAGES ── */
+.msgs{flex:1;overflow-y:auto;padding:14px 13px;display:flex;flex-direction:column;gap:10px;background:var(--bg);scroll-behavior:smooth}
+.msgs::-webkit-scrollbar{width:3px}
+.msgs::-webkit-scrollbar-thumb{background:#c8b89a;border-radius:4px}
+.msg{max-width:88%;animation:fadeUp .22s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.msg.bot{align-self:flex-start}.msg.user{align-self:flex-end}
+.bubble{padding:10px 14px;border-radius:var(--radius);font-size:15.5px;line-height:1.85}
+.msg.bot .bubble{background:var(--white);color:var(--text);border-bottom-right-radius:4px;box-shadow:var(--shadow)}
+.msg.user .bubble{background:var(--green);color:#fff;border-bottom-left-radius:4px}
+.msg-time{font-size:11px;color:#bbb;margin-top:3px;padding:0 3px}
+.msg.user .msg-time{text-align:left}
+
+/* quick buttons */
+.qbtns{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.qbtn{background:var(--white);border:1.5px solid var(--green);color:var(--green);padding:7px 14px;border-radius:20px;font-size:14px;cursor:pointer;font-family:'Vazirmatn',sans-serif;transition:.2s;font-weight:500;box-shadow:var(--shadow)}
+.qbtn:hover{background:var(--green);color:#fff}
+
+/* typing */
+.typing-wrap{display:flex;gap:5px;align-items:center;padding:10px 13px;background:var(--white);border-radius:var(--radius);border-bottom-right-radius:4px;width:fit-content;box-shadow:var(--shadow)}
+.typing-wrap span{width:6px;height:6px;background:var(--green);border-radius:50%;animation:bounce 1.2s infinite}
+.typing-wrap span:nth-child(2){animation-delay:.2s}.typing-wrap span:nth-child(3){animation-delay:.4s}
+@keyframes bounce{0%,80%,100%{transform:translateY(0);opacity:.4}40%{transform:translateY(-6px);opacity:1}}
+
+/* ── INPUT ── */
+.inp-area{padding:10px 12px;background:var(--white);border-top:1px solid #e8e0d5;display:flex;gap:8px;align-items:center;flex-shrink:0}
+.inp-area input{flex:1;border:1.5px solid #ddd;border-radius:25px;padding:10px 15px;font-family:'Vazirmatn',sans-serif;font-size:15px;outline:none;background:#fafafa;direction:rtl;transition:.2s}
+.inp-area input:focus{border-color:var(--green);background:#fff}
+.send-btn{width:38px;height:38px;background:var(--green);border:none;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:.2s}
+.send-btn:hover{background:var(--green-dark)}.send-btn:active{transform:scale(.92)}
+.send-btn svg{width:16px;height:16px;fill:#fff}
+
+/* ── PRODUCT CARD ── */
+.pcard{background:var(--white);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);margin-top:6px;max-width:290px}
+.pcard-img{width:100%;height:150px;object-fit:cover;display:block;cursor:pointer;background:var(--green-light)}
+.pcard-no-img{width:100%;height:110px;background:linear-gradient(135deg,var(--green-light),var(--green-mid));display:flex;align-items:center;justify-content:center;font-size:36px}
+.pcard-body{padding:11px 13px}
+.pcard-name{font-weight:700;font-size:15.5px;color:var(--green-dark);margin-bottom:2px}
+.pcard-badge{display:inline-block;background:var(--gold-light);color:var(--gold);font-size:12px;font-weight:600;border-radius:10px;padding:3px 9px;margin-bottom:8px}
+.pcard-sizes{display:flex;flex-direction:column;gap:3px;margin-bottom:9px}
+.pcard-row{display:flex;justify-content:space-between;font-size:14px;padding:4px 0;border-bottom:1px solid #f5f5f5}
+.pcard-row:last-child{border:none}
+.pcard-slabel{color:#555}.pcard-price{font-weight:700;color:var(--green)}
+.pcard-actions{display:flex;gap:7px}
+.btn-order{flex:1;background:var(--green);color:#fff;border:none;padding:9px;font-family:'Vazirmatn',sans-serif;font-size:14px;font-weight:600;cursor:pointer;border-radius:10px;transition:.2s}
+.btn-order:hover{background:var(--green-dark)}
+.btn-size-guide{background:var(--gold-light);color:var(--gold);border:none;padding:9px 11px;font-family:'Vazirmatn',sans-serif;font-size:13.5px;font-weight:600;cursor:pointer;border-radius:10px;white-space:nowrap}
+
+/* ── ORDER FORM ── */
+.oform{background:var(--white);border:1.5px solid var(--green);border-radius:var(--radius);padding:14px;margin-top:6px;max-width:300px}
+.oform h4{font-size:15px;font-weight:700;color:var(--green-dark);margin-bottom:10px;border-bottom:1px solid var(--green-light);padding-bottom:7px}
+.ofield{display:flex;flex-direction:column;gap:3px;margin-bottom:8px}
+.ofield label{font-size:13px;color:#666;font-weight:500}
+.ofield input,.ofield select,.ofield textarea{border:1.5px solid #ddd;border-radius:9px;padding:9px 12px;font-family:'Vazirmatn',sans-serif;font-size:14.5px;outline:none;background:#fafafa;direction:rtl}
+.ofield input:focus,.ofield select:focus{border-color:var(--green)}
+.ofield textarea{resize:none;height:60px}
+.btn-wa{width:100%;background:#25d366;color:#fff;border:none;border-radius:10px;padding:11px;font-family:'Vazirmatn',sans-serif;font-size:14.5px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;margin-top:4px}
+.btn-wa:hover{background:#128c7e}
+
+/* tracking */
+.track-box{background:var(--white);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow);margin-top:6px;max-width:300px}
+.track-box h4{font-size:13px;font-weight:700;color:var(--green-dark);margin-bottom:10px}
+.track-item{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px}
+.track-icon{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.track-icon.done{background:var(--green-light)}
+.track-icon.active{background:#fff3cd}
+.track-icon.pending{background:#f5f5f5}
+.track-text{flex:1}
+.track-label{font-size:14px;font-weight:600;color:var(--text)}
+.track-sub{font-size:12.5px;color:var(--gray);margin-top:2px}
+
+/* size guide */
+.sg-table{background:var(--white);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);margin-top:6px;font-size:12px}
+.sg-head{background:var(--green);color:#fff;padding:9px 13px;font-weight:700;font-size:14px}
+.sg-row{display:flex;border-bottom:1px solid #f0f0f0}
+.sg-row:last-child{border:none}
+.sg-row:nth-child(even){background:#f9fdf9}
+.sg-cell{flex:1;padding:8px 11px;color:#444;font-size:13.5px}
+.sg-cell.head{font-weight:600;color:var(--green-dark);background:var(--green-light)}
+.sg-note{font-size:11.5px;color:#888;padding:8px 12px;background:#fafafa;border-top:1px solid #f0f0f0}
+
+/* ── LIGHTBOX ── */
+.lbox{position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:300;display:none;align-items:center;justify-content:center}
+.lbox.open{display:flex}
+.lbox img{max-width:95vw;max-height:90vh;border-radius:12px;object-fit:contain}
+.lbox-close{position:absolute;top:14px;left:14px;background:rgba(255,255,255,.15);border:none;color:#fff;width:36px;height:36px;border-radius:50%;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+
+/* ── OVERLAY / MODAL ── */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:200;display:none;align-items:center;justify-content:center;padding:12px}
+.overlay.open{display:flex}
+.modal{background:#fff;border-radius:20px;width:100%;max-width:460px;max-height:90vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 24px 70px rgba(0,0,0,.4)}
+.modal-hdr{background:linear-gradient(135deg,var(--green-dark),var(--green));color:#fff;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.modal-hdr h2{font-size:14px;font-weight:700}
+.modal-close{background:rgba(255,255,255,.18);border:none;color:#fff;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center}
+.modal-body{overflow-y:auto;padding:14px;flex:1}
+.modal-body::-webkit-scrollbar{width:3px}
+.modal-body::-webkit-scrollbar-thumb{background:var(--green-mid);border-radius:4px}
+
+/* login */
+.login-box{display:flex;flex-direction:column;gap:12px;padding:8px 0}
+.login-box h3{font-size:14px;color:#333;text-align:center}
+.login-box input{border:1.5px solid #ddd;border-radius:10px;padding:10px 14px;font-family:'Vazirmatn',sans-serif;font-size:14px;outline:none;direction:ltr;text-align:center}
+.login-box input:focus{border-color:var(--green)}
+.login-btn{background:var(--green);color:#fff;border:none;border-radius:10px;padding:11px;font-family:'Vazirmatn',sans-serif;font-size:14px;font-weight:600;cursor:pointer}
+.err-msg{color:#c0392b;font-size:12px;text-align:center}
+
+/* admin panel */
+.apanel{display:none;flex-direction:column}
+.apanel.active{display:flex}
+.tab-bar{display:flex;border-bottom:2px solid var(--green-light);margin-bottom:12px;flex-shrink:0;overflow-x:auto}
+.tab-bar::-webkit-scrollbar{display:none}
+.tab{flex:1;padding:8px 4px;text-align:center;font-size:11px;font-weight:600;color:#888;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:.2s;white-space:nowrap}
+.tab.active{color:var(--green);border-bottom-color:var(--green)}
+.tc{display:none}.tc.active{display:block}
+
+/* admin product card */
+.apc{background:#f8fdf9;border:1px solid var(--green-mid);border-radius:12px;padding:12px;margin-bottom:10px}
+.apc-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}
+.apc-name{font-weight:700;font-size:13px;color:var(--green-dark)}
+.btn-del{background:#fdecea;border:1px solid #f5c6c6;color:#c0392b;border-radius:8px;padding:4px 9px;font-size:11px;cursor:pointer;font-family:'Vazirmatn',sans-serif}
+.btn-del:hover{background:#c0392b;color:#fff}
+.sizes-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.si{display:flex;flex-direction:column;gap:3px}
+.si label{font-size:11px;color:#666}
+.si input{border:1px solid #ddd;border-radius:8px;padding:6px 8px;font-size:12px;font-family:'Vazirmatn',sans-serif;outline:none;direction:ltr;text-align:right}
+.si input:focus{border-color:var(--green)}
+.img-up{border:2px dashed #81c784;border-radius:10px;padding:12px;text-align:center;cursor:pointer;margin-bottom:9px;position:relative;transition:.2s}
+.img-up:hover{background:var(--green-light)}
+.img-up input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.img-up-txt{font-size:11.5px;color:#888}
+
+/* add form */
+.add-form{background:var(--green-light);border:1.5px dashed #81c784;border-radius:12px;padding:13px}
+.add-form h4{font-size:13px;font-weight:700;color:var(--green);margin-bottom:10px}
+.frow{display:flex;flex-direction:column;gap:4px;margin-bottom:9px}
+.frow label{font-size:12px;color:#555;font-weight:500}
+.frow input,.frow select{border:1.5px solid #ddd;border-radius:9px;padding:8px 11px;font-family:'Vazirmatn',sans-serif;font-size:13px;outline:none;background:#fff}
+.frow input:focus{border-color:var(--green)}
+.sz-rows{display:flex;flex-direction:column;gap:6px;margin-bottom:8px}
+.szr{display:flex;gap:6px;align-items:center}
+.szr input{flex:1;border:1.5px solid #ddd;border-radius:9px;padding:7px 9px;font-family:'Vazirmatn',sans-serif;font-size:12px;outline:none;background:#fff}
+.szr input:focus{border-color:var(--green)}
+.btn-add-sz{background:var(--white);border:1.5px solid var(--green);color:var(--green);border-radius:8px;padding:5px 9px;font-size:11px;cursor:pointer;font-family:'Vazirmatn',sans-serif;white-space:nowrap}
+.btn-rem-sz{background:#fdecea;border:1px solid #f5c6c6;color:#c0392b;border-radius:8px;padding:5px 7px;font-size:11px;cursor:pointer}
+.btn-save{background:var(--green);color:#fff;border:none;border-radius:10px;padding:10px;font-family:'Vazirmatn',sans-serif;font-size:13px;font-weight:600;cursor:pointer;width:100%;margin-top:6px}
+.btn-save:hover{background:var(--green-dark)}
+.toast{background:var(--green-light);border:1px solid #81c784;color:var(--green);border-radius:10px;padding:8px 12px;text-align:center;font-size:12px;font-weight:600;margin-top:8px;display:none}
+
+/* orders */
+.ocard{background:#f8fdf9;border:1px solid var(--green-mid);border-radius:12px;padding:12px;margin-bottom:9px}
+.ocard-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}
+.onum{font-weight:700;font-size:12.5px;color:var(--green-dark)}
+.otime{font-size:10.5px;color:#aaa}
+.odetail{font-size:12px;color:#444;line-height:1.9}
+.obadge{display:inline-block;border-radius:8px;padding:2px 8px;font-size:10.5px;font-weight:600;margin-top:5px}
+.obadge.new{background:#fff3cd;color:#856404}
+.obadge.done{background:var(--green-light);color:var(--green-dark)}
+.ocard-btns{display:flex;gap:6px;margin-top:8px}
+.btn-wa-sm{background:#25d366;color:#fff;border:none;border-radius:8px;padding:6px 10px;font-size:11.5px;font-family:'Vazirmatn',sans-serif;cursor:pointer;display:flex;align-items:center;gap:4px}
+.btn-done{background:var(--green-light);color:var(--green-dark);border:none;border-radius:8px;padding:6px 10px;font-size:11.5px;font-family:'Vazirmatn',sans-serif;cursor:pointer}
+.no-orders{text-align:center;color:#aaa;font-size:13px;padding:24px 0}
+.orders-stats{display:flex;gap:8px;margin-bottom:12px}
+.stat-box{flex:1;background:var(--green-light);border-radius:10px;padding:10px;text-align:center}
+.stat-num{font-size:18px;font-weight:800;color:var(--green-dark)}
+.stat-label{font-size:10.5px;color:#666;margin-top:2px}
+
+/* settings */
+.ssec{margin-bottom:16px}
+.ssec h4{font-size:13px;font-weight:700;color:var(--green);margin-bottom:8px;border-bottom:1px solid var(--green-light);padding-bottom:5px}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- HEADER -->
+  <div class="hdr">
+    <div class="hdr-top">
+      <div class="logo-circle">🧵</div>
+      <div class="hdr-info">
+        <h1>فروشگاه الخلیل</h1>
+        <p><span class="dot"></span>آنلاین · سراوان · سراسر ایران</p>
+      </div>
+      <div class="hdr-actions">
+        <button class="hdr-btn" onclick="showTracking()">📦 پیگیری</button>
+        <button class="hdr-btn" onclick="openAdmin()">⚙️</button>
+      </div>
+    </div>
+    <div class="search-bar">
+      <svg width="14" height="14" viewBox="0 0 24 24"><path d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z" stroke="rgba(255,255,255,.6)" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+      <input type="text" id="searchInp" placeholder="جستجوی محصول..." oninput="doSearch(this.value)" onkeydown="if(event.key==='Enter')doSearch(this.value)"/>
+    </div>
+    <div class="filter-row" id="filterRow">
+      <div class="chip active" onclick="setFilter('all',this)">همه</div>
+      <div class="chip" onclick="setFilter('collar',this)">یقه</div>
+      <div class="chip" onclick="setFilter('roll',this)">رول</div>
+      <div class="chip" onclick="setFilter('german',this)">جرمنی</div>
+      <div class="chip" onclick="setFilter('makran',this)">مکران</div>
+      <div class="chip" onclick="setFilter('under1m',this)">زیر ۱ میلیون</div>
+      <div class="chip" onclick="setFilter('over1m',this)">بالای ۱ میلیون</div>
+    </div>
+  </div>
+
+  <!-- MESSAGES -->
+  <div class="msgs" id="msgs"></div>
+
+  <!-- INPUT -->
+  <div class="inp-area">
+    <button class="send-btn" onclick="sendMsg()">
+      <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
+    </button>
+    <input type="text" id="userInp" placeholder="سوال خود را بنویسید..." onkeydown="if(event.key==='Enter')sendMsg()"/>
+  </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lbox" id="lbox" onclick="closeLbox()">
+  <button class="lbox-close">✕</button>
+  <img id="lboxImg" src="" alt=""/>
+</div>
+
+<!-- ADMIN MODAL -->
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <div class="modal-hdr">
+      <h2>⚙️ پنل مدیریت الخلیل</h2>
+      <button class="modal-close" onclick="closeAdmin()">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody">
+      <div class="login-box" id="loginBox">
+        <h3>🔐 ورود به پنل مدیریت</h3>
+        <input type="password" id="passInp" placeholder="رمز عبور" onkeydown="if(event.key==='Enter')doLogin()"/>
+        <button class="login-btn" onclick="doLogin()">ورود</button>
+        <div class="err-msg" id="errMsg"></div>
+      </div>
+      <div class="apanel" id="apanel">
+        <div class="tab-bar">
+          <div class="tab active" onclick="swTab('products')">محصولات</div>
+          <div class="tab" onclick="swTab('add')">➕ افزودن</div>
+          <div class="tab" onclick="swTab('orders')">سفارش‌ها</div>
+          <div class="tab" onclick="swTab('settings')">تنظیمات</div>
+        </div>
+        <div class="tc active" id="tc-products"></div>
+        <div class="tc" id="tc-add"></div>
+        <div class="tc" id="tc-orders"></div>
+        <div class="tc" id="tc-settings"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════ CONFIG ═══════════════
+const WA = '989154648350';
+const PASS_KEY = 'alkhalil_pass';
+const DEF_PASS = 'alkhalil1403';
+const getPass = () => localStorage.getItem(PASS_KEY) || DEF_PASS;
+
+// ═══════════════ DATA ═══════════════
+const DEFAULT_PRODUCTS = [
+  {id:'collar_german',name:'یقه لایی جرمنی',type:'collar',brand:'german',image:'',
+   sizes:[{label:'سایز ۱۰ تا ۱۲.۵ اینچ',price:430000},{label:'سایز ۱۳ تا ۱۷.۵ اینچ',price:440000},{label:'سایز ۱۸ تا ۲۰ اینچ',price:450000}]},
+  {id:'collar_makran',name:'یقه لایی مکران',type:'collar',brand:'makran',image:'',
+   sizes:[{label:'سایز ۱۰ تا ۱۲.۵ اینچ',price:290000},{label:'سایز ۱۳ تا ۱۷.۵ اینچ',price:300000},{label:'سایز ۱۸ تا ۲۰ اینچ',price:310000}]},
+  {id:'roll_german',name:'رول لایی جرمنی',type:'roll',brand:'german',image:'',
+   sizes:[{label:'رول ربع کم',price:880000},{label:'رول یک',price:1180000},{label:'رول یک ربع',price:1470000},{label:'رول دو',price:2350000},{label:'رول دو و نیم',price:2940000},{label:'رول سه',price:3520000}]},
+  {id:'roll_makran',name:'رول لایی مکران',type:'roll',brand:'makran',image:'',
+   sizes:[{label:'رول ربع کم',price:600000},{label:'رول یک',price:800000},{label:'رول یک ربع',price:1000000},{label:'رول یک و نیم',price:1200000},{label:'رول دو',price:1600000},{label:'رول دو و نیم',price:2000000},{label:'رول سه',price:2400000},{label:'رول شیروانی',price:950000}]}
+];
+
+const loadP = () => { try{const s=localStorage.getItem('alkhalil_p');return s?JSON.parse(s):JSON.parse(JSON.stringify(DEFAULT_PRODUCTS))}catch(e){return JSON.parse(JSON.stringify(DEFAULT_PRODUCTS))} };
+const saveP = p => localStorage.setItem('alkhalil_p',JSON.stringify(p));
+const loadO = () => { try{const s=localStorage.getItem('alkhalil_o');return s?JSON.parse(s):[]}catch(e){return []} };
+const saveO = o => localStorage.setItem('alkhalil_o',JSON.stringify(o));
+
+let prods = loadP();
+let activeFilter = 'all';
+let loggedIn = false;
+let newSizes = [{label:'',price:''}];
+let newImgData = '';
+
+// ═══════════════ HELPERS ═══════════════
+const fmt = n => Number(n).toLocaleString('fa-IR') + ' تومان';
+const nowT = () => { const d=new Date(); return d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0') };
+
+function filterProds(filter, search='') {
+  let list = loadP();
+  if (filter === 'collar') list = list.filter(p => p.type==='collar');
+  else if (filter === 'roll') list = list.filter(p => p.type==='roll');
+  else if (filter === 'german') list = list.filter(p => p.brand==='german');
+  else if (filter === 'makran') list = list.filter(p => p.brand==='makran');
+  else if (filter === 'under1m') list = list.filter(p => p.sizes.some(s=>s.price<1000000));
+  else if (filter === 'over1m') list = list.filter(p => p.sizes.some(s=>s.price>=1000000));
+  if (search) list = list.filter(p => p.name.includes(search) || p.sizes.some(s=>s.label.includes(search)));
+  return list;
+}
+
+// ═══════════════ CHAT RENDERING ═══════════════
+function buildPcard(p) {
+  const img = p.image
+    ? `<img class="pcard-img" src="${p.image}" onclick="openLbox('${p.image}')" alt="${p.name}"/>`
+    : `<div class="pcard-no-img">🧵</div>`;
+  const badge = p.brand==='german' ? '⭐ درجه یک - جرمنی' : p.brand==='makran' ? '✅ درجه دو - مکران' : '';
+  const rows = p.sizes.map(s=>`<div class="pcard-row"><span class="pcard-slabel">${s.label}</span><span class="pcard-price">${fmt(s.price)}</span></div>`).join('');
+  return `<div class="pcard">${img}<div class="pcard-body">
+    <div class="pcard-name">${p.name}</div>
+    ${badge?`<div class="pcard-badge">${badge}</div>`:''}
+    <div class="pcard-sizes">${rows}</div>
+    <div class="pcard-actions">
+      <button class="btn-order" onclick="showOForm('${p.id}')">🛒 ثبت سفارش</button>
+      ${p.type==='collar'?`<button class="btn-size-guide" onclick="showSizeGuide()">📏 راهنما</button>`:''}
+    </div>
+  </div></div>`;
+}
+
+function showOForm(prodId) {
+  const p = loadP().find(x=>x.id===prodId);
+  if (!p) return;
+  const opts = p.sizes.map(s=>`<option value="${s.label}|${s.price}">${s.label} — ${fmt(s.price)}</option>`).join('');
+  const html = `<div class="oform">
+    <h4>🛒 سفارش — ${p.name}</h4>
+    <div class="ofield"><label>نام و نام خانوادگی *</label><input id="oName" placeholder="مثلاً: احمد رحیمی"/></div>
+    <div class="ofield"><label>شماره تماس *</label><input id="oPhone" type="tel" placeholder="09xxxxxxxxx"/></div>
+    <div class="ofield"><label>استان / شهر</label><input id="oCity" placeholder="مثلاً: سراوان - سیستان"/></div>
+    <div class="ofield"><label>سایز / مقدار</label><select id="oSize">${opts}</select></div>
+    <div class="ofield"><label>تعداد</label><input id="oQty" type="number" value="1" min="1" style="direction:ltr"/></div>
+    <div class="ofield"><label>توضیحات</label><textarea id="oNote" placeholder="هر توضیح اضافه‌ای..."></textarea></div>
+    <button class="btn-wa" onclick="submitOrder('${p.id}','${p.name}')">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.533 5.858L.057 23.552a.5.5 0 0 0 .6.6l5.694-1.476A11.953 11.953 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg>
+      ارسال سفارش به واتساپ
+    </button>
+    <div style="font-size:11.5px;color:#999;text-align:center;margin-top:6px">پس از باز شدن واتساپ، فقط دکمه ارسال 📤 را بزنید</div>
+  </div>`;
+  addMsg(html, false, true);
+}
+
+function submitOrder(prodId, prodName) {
+  const name = document.getElementById('oName')?.value.trim();
+  const phone = document.getElementById('oPhone')?.value.trim();
+  const city = document.getElementById('oCity')?.value.trim();
+  const sizeVal = document.getElementById('oSize')?.value;
+  const qty = document.getElementById('oQty')?.value || 1;
+  const note = document.getElementById('oNote')?.value.trim();
+  if (!name||!phone) { addMsg('⚠️ لطفاً نام و شماره تماس را وارد کنید.'); return; }
+  const [sizeLabel] = sizeVal.split('|');
+  const orderId = 'KH-' + Date.now().toString().slice(-6);
+  const order = {id:orderId,prodId,prodName,name,phone,city,sizeLabel,qty,note,time:new Date().toLocaleString('fa-IR'),status:'new'};
+  const orders = loadO(); orders.unshift(order); saveO(orders);
+  const txt = `🛒 سفارش جدید — فروشگاه الخلیل\n\n🔖 کد سفارش: ${orderId}\n👤 نام: ${name}\n📞 تلفن: ${phone}${city?'\n📍 شهر: '+city:''}\n📦 محصول: ${prodName}\n📐 سایز: ${sizeLabel}\n🔢 تعداد: ${qty}${note?'\n📝 توضیحات: '+note:''}\n⏰ زمان: ${order.time}`;
+  window.open(`https://wa.me/${WA}?text=${encodeURIComponent(txt)}`, '_blank');
+  addMsg(`✅ سفارش شما ثبت شد!\n\n🔖 کد پیگیری: ${orderId}\n\nاین کد را نگه دارید تا وضعیت سفارش خود را پیگیری کنید.`);
+}
+
+function showTracking() {
+  const html = `<div class="oform">
+    <h4>📦 پیگیری سفارش</h4>
+    <div class="ofield"><label>کد پیگیری سفارش</label><input id="trackCode" placeholder="مثلاً: KH-123456" style="direction:ltr;text-align:center;font-size:14px;letter-spacing:2px"/></div>
+    <button class="btn-save" onclick="doTrack()">🔍 پیگیری</button>
+  </div>`;
+  addMsg(html, false, true);
+}
+
+function doTrack() {
+  const code = document.getElementById('trackCode')?.value.trim().toUpperCase();
+  if (!code) { addMsg('کد پیگیری را وارد کنید.'); return; }
+  const orders = loadO();
+  const o = orders.find(x => x.id === code);
+  if (!o) { addMsg(`❌ سفارشی با کد "${code}" یافت نشد.\nلطفاً کد را دوباره بررسی کنید.`); return; }
+  const isDone = o.status === 'done';
+  const html = `<div class="track-box">
+    <h4>📦 وضعیت سفارش ${o.id}</h4>
+    <div class="track-item">
+      <div class="track-icon done">✅</div>
+      <div class="track-text"><div class="track-label">سفارش ثبت شد</div><div class="track-sub">${o.time}</div></div>
+    </div>
+    <div class="track-item">
+      <div class="track-icon ${isDone?'done':'active'}">📞</div>
+      <div class="track-text"><div class="track-label">تأیید توسط فروشگاه</div><div class="track-sub">${isDone?'تأیید شده':'در انتظار تأیید'}</div></div>
+    </div>
+    <div class="track-item">
+      <div class="track-icon ${isDone?'done':'pending'}">🚚</div>
+      <div class="track-text"><div class="track-label">ارسال محصول</div><div class="track-sub">${isDone?'ارسال شده':'در انتظار ارسال'}</div></div>
+    </div>
+    <div style="background:#f9f9f9;border-radius:10px;padding:10px;margin-top:8px;font-size:12px;color:#555;line-height:1.9">
+      👤 ${o.name} | 📦 ${o.prodName}<br>📐 ${o.sizeLabel} × ${o.qty}
+    </div>
+  </div>`;
+  addMsg(html, false, true);
+}
+
+function showSizeGuide() {
+  const html = `<div class="sg-table">
+    <div class="sg-head">📏 راهنمای انتخاب سایز یقه</div>
+    <div class="sg-row">
+      <div class="sg-cell head">سایز اینچ</div>
+      <div class="sg-cell head">دور گردن (سانتی‌متر)</div>
+      <div class="sg-cell head">مناسب برای</div>
+    </div>
+    <div class="sg-row"><div class="sg-cell">۱۰ – ۱۰.۵</div><div class="sg-cell">۳۷ – ۳۸</div><div class="sg-cell">بچه / نوجوان</div></div>
+    <div class="sg-row"><div class="sg-cell">۱۱ – ۱۱.۵</div><div class="sg-cell">۳۹ – ۴۰</div><div class="sg-cell">بدن کوچک</div></div>
+    <div class="sg-row"><div class="sg-cell">۱۲ – ۱۲.۵</div><div class="sg-cell">۴۱ – ۴۲</div><div class="sg-cell">متوسط</div></div>
+    <div class="sg-row"><div class="sg-cell">۱۳ – ۱۴</div><div class="sg-cell">۴۳ – ۴۵</div><div class="sg-cell">متوسط رو به بالا</div></div>
+    <div class="sg-row"><div class="sg-cell">۱۴.۵ – ۱۵.۵</div><div class="sg-cell">۴۶ – ۴۸</div><div class="sg-cell">درشت</div></div>
+    <div class="sg-row"><div class="sg-cell">۱۶ – ۱۷.۵</div><div class="sg-cell">۴۹ – ۵۲</div><div class="sg-cell">خیلی درشت</div></div>
+    <div class="sg-row"><div class="sg-cell">۱۸ – ۲۰</div><div class="sg-cell">۵۳ – ۵۸</div><div class="sg-cell">سایز بزرگ</div></div>
+    <div class="sg-note">💡 نکته: برای اندازه‌گیری دقیق، دور گردن را در پایین‌ترین نقطه با سانتی‌متر اندازه بگیرید.</div>
+  </div>`;
+  addMsg(html, false, true);
+}
+
+// ═══════════════ SEARCH & FILTER ═══════════════
+function setFilter(f, el) {
+  activeFilter = f;
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  const search = document.getElementById('searchInp').value;
+  const list = filterProds(f, search);
+  if (!list.length) { addMsg('محصولی با این فیلتر یافت نشد.'); return; }
+  const html = list.map(p=>buildPcard(p)).join('');
+  addMsg(html, false, true);
+}
+
+function doSearch(val) {
+  if (!val || val.length < 2) return;
+  const list = filterProds(activeFilter, val);
+  if (!list.length) { addMsg(`نتیجه‌ای برای "${val}" یافت نشد.`); return; }
+  const html = list.map(p=>buildPcard(p)).join('');
+  addMsg(`نتایج جستجو برای "${val}":`);
+  addMsg(html, false, true);
+}
+
+// ═══════════════ BOT LOGIC ═══════════════
+function getResp(text) {
+  const t = text.trim().toLowerCase();
+  const list = loadP();
+
+  if (/سلام|درود|خوش|hello|hi/.test(t))
+    return {text:'سلام! 👋 به فروشگاه الخلیل خوش آمدید.\nلایی چسب یقه و رول در دو برند جرمنی و مکران با ارسال به سراسر ایران.',
+      quickBtns:['📋 همه محصولات','📏 راهنمای سایز','📦 پیگیری سفارش','📞 تماس با ما']};
+
+  if (/تماس|آدرس|شماره|تلفن|واتساپ/.test(t))
+    return {text:'📍 فروشگاه الخلیل\nسراوان، سیستان و بلوچستان\n\n📱 واتساپ: 09154648350\n\n🚚 ارسال به سراسر ایران از طریق پست و تیپاکس'};
+
+  if (/راهنما|سایز|اینچ|اندازه/.test(t)) { showSizeGuide(); return null; }
+  if (/پیگیری|کد سفارش|وضعیت/.test(t)) { showTracking(); return null; }
+
+  if (/مقایسه|فرق|تفاوت|بهتر|کدام/.test(t))
+    return {text:'🔍 مقایسه جرمنی و مکران:\n\n🏆 لایی جرمنی (درجه یک)\n• کیفیت بالاتر و دوام بیشتر\n• چسبندگی قوی‌تر\n• مناسب لباس رسمی و صادراتی\n\n✅ لایی مکران (درجه دو)\n• قیمت مناسب‌تر\n• کیفیت قابل قبول\n• مناسب تولید انبوه',
+      quickBtns:['🧵 یقه جرمنی','🧵 یقه مکران','🎞️ رول جرمنی','🎞️ رول مکران']};
+
+  if (/همه|کل|لیست|محصولات/.test(t)) {
+    const html = list.map(p=>buildPcard(p)).join('');
+    return {html, text:'همه محصولات فروشگاه الخلیل:'};
+  }
+
+  for (const p of list) {
+    const words = p.name.split(' ').filter(w=>w.length>1);
+    if (words.some(w=>t.includes(w.toLowerCase())))
+      return {html:buildPcard(p), text:`${p.name}:`};
+  }
+
+  return {text:'می‌توانم در مورد این موارد کمک کنم:',
+    quickBtns:['📋 همه محصولات','📏 راهنمای سایز','🔍 مقایسه جرمنی و مکران','📦 پیگیری سفارش','📞 تماس با ما']};
+}
+
+// ═══════════════ MSG ENGINE ═══════════════
+function addMsg(content, isUser=false, isHtml=false) {
+  const msgs = document.getElementById('msgs');
+  const div = document.createElement('div'); div.className=`msg ${isUser?'user':'bot'}`;
+  const bubble = document.createElement('div'); bubble.className='bubble';
+  if (isHtml) { bubble.innerHTML=content } else { bubble.textContent=content; bubble.style.whiteSpace='pre-line' }
+  div.appendChild(bubble);
+  const t = document.createElement('div'); t.className='msg-time'; t.textContent=nowT(); div.appendChild(t);
+  msgs.appendChild(div); msgs.scrollTop=msgs.scrollHeight;
+}
+
+function addQuick(btns) {
+  const msgs = document.getElementById('msgs');
+  const div = document.createElement('div'); div.className='msg bot';
+  const inner = document.createElement('div'); inner.className='qbtns';
+  btns.forEach(b=>{
+    const btn = document.createElement('button'); btn.className='qbtn'; btn.textContent=b;
+    btn.onclick=()=>{ inner.parentElement.remove(); processInput(b.replace(/[📋📏🔍📦📞🧵🎞️]/g,'').trim()) };
+    inner.appendChild(btn);
+  });
+  div.appendChild(inner); msgs.appendChild(div); msgs.scrollTop=msgs.scrollHeight;
+}
+
+function showTyping() {
+  const msgs = document.getElementById('msgs');
+  const div = document.createElement('div'); div.className='msg bot'; div.id='typing-ind';
+  div.innerHTML='<div class="typing-wrap"><span></span><span></span><span></span></div>';
+  msgs.appendChild(div); msgs.scrollTop=msgs.scrollHeight;
+}
+function removeTyping() { const t=document.getElementById('typing-ind'); if(t)t.remove() }
+
+function processInput(text) {
+  addMsg(text, true); showTyping();
+  setTimeout(()=>{
+    removeTyping();
+    const r = getResp(text);
+    if (!r) return;
+    if (r.text && r.html) { addMsg(r.text); addMsg(r.html,false,true) }
+    else if (r.html) { addMsg(r.html,false,true) }
+    else { addMsg(r.text) }
+    if (r.quickBtns) addQuick(r.quickBtns);
+  }, 650);
+}
+
+function sendMsg() {
+  const inp = document.getElementById('userInp'); const t=inp.value.trim(); if(!t)return; inp.value=''; processInput(t);
+}
+
+// ═══════════════ LIGHTBOX ═══════════════
+function openLbox(src) { document.getElementById('lboxImg').src=src; document.getElementById('lbox').classList.add('open') }
+function closeLbox() { document.getElementById('lbox').classList.remove('open') }
+
+// ═══════════════ ADMIN ═══════════════
+function openAdmin() {
+  document.getElementById('overlay').classList.add('open');
+  if (!loggedIn) { document.getElementById('loginBox').style.display='flex'; document.getElementById('apanel').classList.remove('active'); document.getElementById('passInp').value=''; document.getElementById('errMsg').textContent='' }
+}
+function closeAdmin() { document.getElementById('overlay').classList.remove('open') }
+
+function doLogin() {
+  if (document.getElementById('passInp').value === getPass()) {
+    loggedIn=true; document.getElementById('loginBox').style.display='none'; document.getElementById('apanel').classList.add('active');
+    renderProdsTab(); renderAddTab(); renderOrdersTab(); renderSettingsTab();
+  } else { document.getElementById('errMsg').textContent='رمز عبور اشتباه است!' }
+}
+
+function swTab(name) {
+  const names=['products','add','orders','settings'];
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',names[i]===name));
+  document.querySelectorAll('.tc').forEach(tc=>tc.classList.remove('active'));
+  document.getElementById('tc-'+name).classList.add('active');
+  if (name==='orders') renderOrdersTab();
+}
+
+// Products tab
+function renderProdsTab() {
+  const list = loadP(); let html='';
+  list.forEach((p,pi)=>{
+    const imgHtml = p.image ? `<img src="${p.image}" style="width:100%;height:90px;object-fit:cover;border-radius:8px;margin-bottom:8px;display:block"/>` : '';
+    html += `<div class="apc">
+      <div class="apc-head"><span class="apc-name">${p.name}</span><button class="btn-del" onclick="delProd(${pi})">حذف</button></div>
+      <div class="img-up" onclick="document.getElementById('imgUp${pi}').click()">
+        ${imgHtml}<div class="img-up-txt">📷 کلیک برای آپلود / تغییر عکس</div>
+        <input type="file" id="imgUp${pi}" accept="image/*" style="display:none" onchange="uploadImg(${pi},this)"/>
+      </div>
+      <div class="sizes-grid">`;
+    p.sizes.forEach((s,si)=>{
+      html+=`<div class="si"><label>${s.label}</label><input type="number" value="${s.price}" onchange="updPrice(${pi},${si},this.value)"/></div>`;
+    });
+    html+=`</div><button class="btn-save" style="margin-top:8px" onclick="savePrices(${pi})">💾 ذخیره قیمت‌ها</button>
+      <div class="toast" id="toast-${pi}">✅ ذخیره شد!</div></div>`;
+  });
+  document.getElementById('tc-products').innerHTML = html || '<div style="text-align:center;color:#aaa;padding:20px">محصولی موجود نیست</div>';
+}
+
+function uploadImg(pi, input) {
+  if (!input.files||!input.files[0]) return;
+  const reader = new FileReader();
+  reader.onload = e => { const p=loadP(); p[pi].image=e.target.result; saveP(p); renderProdsTab() };
+  reader.readAsDataURL(input.files[0]);
+}
+function updPrice(pi,si,val) { const p=loadP(); p[pi].sizes[si].price=parseInt(val)||0; prods=p }
+function savePrices(pi) { saveP(prods); const t=document.getElementById('toast-'+pi); t.style.display='block'; setTimeout(()=>t.style.display='none',2000) }
+function delProd(pi) { if(!confirm('حذف شود؟'))return; const p=loadP(); p.splice(pi,1); saveP(p); prods=p; renderProdsTab() }
+
+// Add tab
+function renderAddTab() {
+  let szHtml='';
+  newSizes.forEach((s,i)=>{
+    szHtml+=`<div class="szr">
+      <input placeholder="نام سایز" value="${s.label}" onchange="newSizes[${i}].label=this.value"/>
+      <input type="number" placeholder="قیمت" value="${s.price}" style="max-width:95px" onchange="newSizes[${i}].price=this.value"/>
+      ${i>0?`<button class="btn-rem-sz" onclick="remSz(${i})">✕</button>`:''}
+    </div>`;
+  });
+  document.getElementById('tc-add').innerHTML=`
+    <div class="add-form">
+      <h4>➕ افزودن محصول جدید</h4>
+      <div class="frow"><label>نام محصول *</label><input type="text" id="nName" placeholder="مثلاً: یقه لایی ترکیه"/></div>
+      <div class="frow"><label>دسته‌بندی</label>
+        <select id="nType"><option value="collar">یقه</option><option value="roll">رول</option><option value="other">سایر</option></select>
+      </div>
+      <div class="frow"><label>برند</label>
+        <select id="nBrand"><option value="german">جرمنی</option><option value="makran">مکران</option><option value="other">سایر</option></select>
+      </div>
+      <div class="img-up" onclick="document.getElementById('nImgUp').click()" style="margin-bottom:10px">
+        <img id="nImgPrev" style="width:100%;height:80px;object-fit:cover;border-radius:8px;margin-bottom:6px;display:none"/>
+        <div class="img-up-txt">📷 عکس محصول (اختیاری)</div>
+        <input type="file" id="nImgUp" accept="image/*" style="display:none" onchange="prevNewImg(this)"/>
+      </div>
+      <div class="frow"><label>سایزها و قیمت‌ها *</label></div>
+      <div id="szRows">${szHtml}</div>
+      <button class="btn-add-sz" onclick="addSz()">+ سایز جدید</button>
+      <button class="btn-save" onclick="saveNewProd()">💾 ذخیره محصول</button>
+      <div class="toast" id="addToast">✅ محصول اضافه شد!</div>
+    </div>`;
+}
+function prevNewImg(input) {
+  if (!input.files||!input.files[0]) return;
+  const r=new FileReader(); r.onload=e=>{newImgData=e.target.result;const p=document.getElementById('nImgPrev');p.src=e.target.result;p.style.display='block'}; r.readAsDataURL(input.files[0]);
+}
+function addSz() { newSizes.push({label:'',price:''}); renderAddTab() }
+function remSz(i) { newSizes.splice(i,1); renderAddTab() }
+function saveNewProd() {
+  const name=document.getElementById('nName').value.trim();
+  if (!name) { alert('نام محصول را وارد کنید'); return }
+  const sizes=newSizes.filter(s=>s.label&&s.price).map(s=>({label:s.label,price:parseInt(s.price)||0}));
+  if (!sizes.length) { alert('حداقل یک سایز وارد کنید'); return }
+  const type=document.getElementById('nType').value;
+  const brand=document.getElementById('nBrand').value;
+  const p=loadP(); p.push({id:'c_'+Date.now(),name,type,brand,image:newImgData||'',sizes}); saveP(p); prods=p;
+  newSizes=[{label:'',price:''}]; newImgData='';
+  const t=document.getElementById('addToast'); t.style.display='block';
+  setTimeout(()=>{t.style.display='none';renderProdsTab();swTab('products')},1500);
+}
+
+// Orders tab
+function renderOrdersTab() {
+  const orders=loadO();
+  const total=orders.length, done=orders.filter(o=>o.status==='done').length, newO=total-done;
+  let html=`<div class="orders-stats">
+    <div class="stat-box"><div class="stat-num">${total}</div><div class="stat-label">کل سفارش</div></div>
+    <div class="stat-box"><div class="stat-num">${newO}</div><div class="stat-label">در انتظار</div></div>
+    <div class="stat-box"><div class="stat-num">${done}</div><div class="stat-label">تکمیل شده</div></div>
+  </div>`;
+  if (!orders.length) { html+='<div class="no-orders">هنوز سفارشی ثبت نشده</div>'; document.getElementById('tc-orders').innerHTML=html; return }
+  orders.forEach((o,i)=>{
+    const isDone=o.status==='done';
+    const waTxt=`🛒 سفارش ${o.id}\n👤 ${o.name}\n📞 ${o.phone}\n📦 ${o.prodName}\n📐 ${o.sizeLabel} × ${o.qty}${o.note?'\n📝 '+o.note:''}`;
+    html+=`<div class="ocard">
+      <div class="ocard-head"><span class="onum">${o.id}</span><span class="otime">${o.time}</span></div>
+      <div class="odetail">👤 ${o.name} | 📞 ${o.phone}${o.city?' | 📍 '+o.city:''}<br>📦 ${o.prodName} | 📐 ${o.sizeLabel} × ${o.qty}${o.note?'<br>📝 '+o.note:''}</div>
+      <span class="obadge ${isDone?'done':'new'}">${isDone?'✅ تکمیل شده':'🕐 در انتظار'}</span>
+      <div class="ocard-btns">
+        <button class="btn-wa-sm" onclick="window.open('https://wa.me/${WA}?text=${encodeURIComponent(waTxt)}','_blank')">واتساپ</button>
+        ${!isDone?`<button class="btn-done" onclick="markDone(${i})">✅ تکمیل شد</button>`:''}
+      </div>
+    </div>`;
+  });
+  document.getElementById('tc-orders').innerHTML=html;
+}
+function markDone(i) { const o=loadO(); o[i].status='done'; saveO(o); renderOrdersTab() }
+
+// Settings tab
+function renderSettingsTab() {
+  document.getElementById('tc-settings').innerHTML=`
+    <div class="ssec">
+      <h4>🔐 تغییر رمز عبور</h4>
+      <div class="frow"><label>رمز فعلی</label><input type="password" id="oP"/></div>
+      <div class="frow"><label>رمز جدید (حداقل ۴ کاراکتر)</label><input type="password" id="nP1"/></div>
+      <div class="frow"><label>تکرار رمز جدید</label><input type="password" id="nP2"/></div>
+      <button class="btn-save" onclick="chPass()">تغییر رمز</button>
+      <div class="toast" id="pToast">✅ رمز با موفقیت تغییر کرد!</div>
+      <div class="err-msg" id="pErr" style="margin-top:6px"></div>
+    </div>
+    <div class="ssec">
+      <h4>🗑️ حذف سفارش‌های تکمیل‌شده</h4>
+      <button class="btn-del" style="width:100%;padding:9px;font-size:12.5px" onclick="clearDone()">حذف سفارش‌های تکمیل‌شده</button>
+    </div>
+    <div class="ssec">
+      <h4>🔄 بازگردانی قیمت‌های پیش‌فرض</h4>
+      <button class="btn-del" style="width:100%;padding:9px;font-size:12.5px" onclick="resetDef()">بازگردانی به حالت اولیه</button>
+    </div>`;
+}
+function chPass() {
+  const o=document.getElementById('oP').value, n1=document.getElementById('nP1').value, n2=document.getElementById('nP2').value;
+  if (o!==getPass()) { document.getElementById('pErr').textContent='رمز فعلی اشتباه است'; return }
+  if (!n1||n1.length<4) { document.getElementById('pErr').textContent='رمز جدید حداقل ۴ کاراکتر باشد'; return }
+  if (n1!==n2) { document.getElementById('pErr').textContent='رمزهای جدید یکسان نیستند'; return }
+  localStorage.setItem(PASS_KEY,n1); document.getElementById('pErr').textContent='';
+  const t=document.getElementById('pToast'); t.style.display='block'; setTimeout(()=>t.style.display='none',2500);
+}
+function clearDone() { if(!confirm('سفارش‌های تکمیل‌شده حذف شوند؟'))return; const o=loadO().filter(x=>x.status!=='done'); saveO(o); renderOrdersTab() }
+function resetDef() { if(!confirm('همه تغییرات محصولات پاک می‌شود. ادامه می‌دهید؟'))return; saveP(JSON.parse(JSON.stringify(DEFAULT_PRODUCTS))); prods=loadP(); renderProdsTab(); alert('بازگردانی انجام شد.') }
+
+// ═══════════════ INIT ═══════════════
+window.onload = () => {
+  setTimeout(()=>{
+    addMsg('سلام! 👋 به فروشگاه الخلیل خوش آمدید.\n\nلایی چسب یقه و رول در دو کیفیت جرمنی و مکران\n🚚 ارسال به سراسر ایران');
+    setTimeout(()=>addQuick(['📋 همه محصولات','📏 راهنمای سایز','🔍 مقایسه جرمنی و مکران','📦 پیگیری سفارش']),400);
+  },500);
+};
+</script>
+</body>
+</html>
